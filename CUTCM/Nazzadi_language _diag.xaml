@@ -1,0 +1,16 @@
+﻿<Window x:Class="CUTCM.Nazzadi_Language_Diag"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nazzadi_language__diag" Height="176" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Topmost="True">
+    <Grid Background="#FFE5E5E5"  >
+        <TextBlock x:Name="skill_diag_text_block" Margin="10,10,0,0" TextWrapping="Wrap" Text="You have Chosen to be Nazzadi what language choice do you wish  " VerticalAlignment="Top" TextAlignment="Center"/>
+        <Label Content="Language" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+        <Button Content="Cancel" Margin="0,103,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" IsCancel="True"/>
+        <Button Content="Ok" HorizontalAlignment="Right" Margin="0,103,90,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="Button_Click" />
+        <ComboBox x:Name="race_lang_combo" HorizontalAlignment="Left" Margin="82,66,0,0" VerticalAlignment="Top" Width="200" >
+            <ComboBoxItem Content="English" />
+            <ComboBoxItem Content="Nazzadi" />
+            <ComboBoxItem Content="Both" />
+        </ComboBox>
+    </Grid>
+</Window>

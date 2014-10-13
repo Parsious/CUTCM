@@ -1,0 +1,12 @@
+﻿<Window x:Name="skill_diag_box" x:Class="CUTCM.Skill_Diag"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Skill Information" Height="175" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Topmost="True">
+    <Grid Background="#FFE5E5E5"  >
+        <TextBlock x:Name="skill_diag_text_block" Margin="10,10,0,0" TextWrapping="Wrap" Text="lets put some sample text here for the moment . .and we can add some more to get more than on e line " VerticalAlignment="Top" TextAlignment="Center"/>
+        <Label Content="Subject" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="skill_diag_info_text" HorizontalAlignment="Left" Height="23" Margin="64,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218" SpellCheck.IsEnabled="True"/>
+        <Button Content="Cancel" Margin="0,103,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" IsCancel="True"/>
+        <Button Content="Ok" HorizontalAlignment="Right" Margin="0,103,90,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="Button_Click"/>
+    </Grid>
+</Window>
