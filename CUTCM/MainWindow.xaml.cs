@@ -87,8 +87,71 @@ namespace CUTCM
 
             populate_data(_background_data);
             
+        }   
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="passed_data"></param>
+        private void populate_data(Background_Data passed_data)
+        {
+            foreach (var item in passed_data.race_list)
+            {
+                race_combo.Items.Add(item.race_name);
+            }
+            foreach (var item in passed_data.skill_list)
+            {
+                new_skill_name_combo.Items.Add(item.skill_name);
+            }
+            faction_combo.ItemsSource = passed_data.faction_list;
+            virtue_combo.ItemsSource = passed_data.virtue_list;
+            flaw_combo.ItemsSource = passed_data.flaw_list;
+
+            _character_data.char_skill_points = passed_data.skill_points;
+            _character_data.char_attribute_points = passed_data.attribute_points;
+            _character_data.char_cheat_points = passed_data.cheat_points;
+
+            update_attribute_points();
+            update_cheat_ponts();
+            update_skill_points();
+
+            //cheats_txt.Text = string.Format("{0}", _character_data.char_cheat_points);
+            //attribute_text.Text = string.Format("{0}", _character_data.char_attribute_points);
+            //skill_qualities_text.Text = skill_text.Text = string.Format("{0}", _character_data.char_skill_points = passed_data.skill_points);
+
+            agi_att_val_c_text.Text =
+                agi_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[AGI_ATT].attribute_value);
+            int_att_val_c_text.Text =
+                int_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[INT_ATT].attribute_value);
+            per_att_val_c_text.Text =
+                per_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[PER_ATT].attribute_value);
+            pre_att_val_c_text.Text =
+                pre_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[PRE_ATT].attribute_value);
+            str_att_val_c_text.Text =
+                str_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[STR_ATT].attribute_value);
+            ten_att_val_c_text.Text =
+                ten_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[TEN_ATT].attribute_value);
+
+            agi_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[AGI_ATT].attribute_feat);
+            int_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[INT_ATT].attribute_feat);
+            per_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[PER_ATT].attribute_feat);
+            pre_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[PRE_ATT].attribute_feat);
+            str_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[STR_ATT].attribute_feat);
+            ten_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[TEN_ATT].attribute_feat);
+
+            foreach (var item in _background_data.asset_list)
+            {
+                asset_combo.Items.Add(item.quality_name);
+            }
+            foreach (var item in _background_data.drawback_list)
+            {
+                drawback_combo.Items.Add(item.quality_name);
+            }
+            calc_sec_atts();
+
         }
 
+        #region load files code
         /// <summary>
         /// 
         /// </summary>
@@ -157,91 +220,7 @@ namespace CUTCM
             return dir;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="passed_data"></param>
-        private void populate_data(Background_Data passed_data)
-        {
-            foreach (var item in passed_data.race_list)
-            {
-                race_combo.Items.Add(item.race_name);
-            }
-            foreach (var item in passed_data.skill_list)
-            {
-                new_skill_name_combo.Items.Add(item.skill_name);
-            }
-            faction_combo.ItemsSource = passed_data.faction_list;
-            virtue_combo.ItemsSource = passed_data.virtue_list;
-            flaw_combo.ItemsSource = passed_data.flaw_list;
-
-            _character_data.char_skill_points = passed_data.skill_points;
-            _character_data.char_attribute_points = passed_data.attribute_points;
-            _character_data.char_cheat_points = passed_data.cheat_points;
-
-            update_attribute_points();
-            update_cheat_ponts();
-            update_skill_points();
-
-            //cheats_txt.Text = string.Format("{0}", _character_data.char_cheat_points);
-            //attribute_text.Text = string.Format("{0}", _character_data.char_attribute_points);
-            //skill_qualities_text.Text = skill_text.Text = string.Format("{0}", _character_data.char_skill_points = passed_data.skill_points);
-
-            agi_att_val_c_text.Text =
-                agi_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[AGI_ATT].attribute_value);
-            int_att_val_c_text.Text =
-                int_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[INT_ATT].attribute_value);
-            per_att_val_c_text.Text =
-                per_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[PER_ATT].attribute_value);
-            pre_att_val_c_text.Text =
-                pre_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[PRE_ATT].attribute_value);
-            str_att_val_c_text.Text =
-                str_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[STR_ATT].attribute_value);
-            ten_att_val_c_text.Text =
-                ten_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[TEN_ATT].attribute_value);
-
-            agi_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[AGI_ATT].attribute_feat);
-            int_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[INT_ATT].attribute_feat);
-            per_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[PER_ATT].attribute_feat);
-            pre_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[PRE_ATT].attribute_feat);
-            str_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[STR_ATT].attribute_feat);
-            ten_att_feat_text.Text = string.Format("{0}", _character_data.char_attributes[TEN_ATT].attribute_feat);
-
-            foreach (var item in _background_data.asset_list)
-            {
-                asset_combo.Items.Add(item.quality_name);
-            }
-            foreach (var item in _background_data.drawback_list)
-            {
-                drawback_combo.Items.Add(item.quality_name);
-            }
-            calc_sec_atts();
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void update_skill_points()
-        {
-            skill_qualities_text.Text = skill_text.Text = string.Format("{0}", _character_data.char_skill_points );
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void update_cheat_ponts()
-        {
-            cheats_txt.Text = string.Format("{0}", _character_data.char_cheat_points);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void update_attribute_points()
-        {
-            attribute_text.Text = string.Format("{0}", _character_data.char_attribute_points);
-        }
+        #endregion
 
         #region secondary Attributes
        /// <summary>
@@ -743,13 +722,13 @@ namespace CUTCM
         private void remove_skill(string skill_to_remove)
         {
 
-            test_txt.AppendText(string.Format("remove skill called on {0}\n", skill_to_remove));
-            test_txt.AppendText(string.Format("========================================="));
-            foreach (var item in _character_data.char_skills_list)
-            {
-                test_txt.AppendText(string.Format("skill - {0} \n", item.skill_name));
-            }
-            test_txt.AppendText(string.Format("========================================="));
+            //test_txt.AppendText(string.Format("remove skill called on {0}\n", skill_to_remove));
+            //test_txt.AppendText(string.Format("========================================="));
+            //foreach (var item in _character_data.char_skills_list)
+            //{
+            //    test_txt.AppendText(string.Format("skill - {0} \n", item.skill_name));
+            //}
+            //test_txt.AppendText(string.Format("========================================="));
 
 
             var index_to_remove = -1;
@@ -777,10 +756,7 @@ namespace CUTCM
         }
 
         #endregion
-
        
-        
-        
         #region mostly finished stuff
 
 
@@ -935,15 +911,12 @@ namespace CUTCM
         }
 
         #endregion
-
         
-
+        #region attribute buttons
+        
         /// <summary>
         ///  TODO: need to add logic to get the + and - buttons to turn on and off
         /// </summary>
-
-        #region attribute buttons
-        
         ///
         private void agi_p_cheat_button_Click(object sender, RoutedEventArgs e)
         {
@@ -1343,8 +1316,31 @@ namespace CUTCM
 
         #endregion
 
-
         #region numbers updates
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void update_skill_points()
+        {
+            skill_qualities_text.Text = skill_text.Text = string.Format("{0}", _character_data.char_skill_points);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void update_cheat_ponts()
+        {
+            cheats_txt.Text = string.Format("{0}", _character_data.char_cheat_points);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void update_attribute_points()
+        {
+            attribute_text.Text = string.Format("{0}", _character_data.char_attribute_points);
+        }
 
         /// <summary>
         /// 
@@ -1380,6 +1376,7 @@ namespace CUTCM
 
         #endregion
 
+        #region Qualities stuff
         /// <summary>
         /// 
         /// </summary>
@@ -1591,6 +1588,10 @@ namespace CUTCM
             }
         }
 
+        #endregion
+
+        #region base information stuff
+
         /// <summary>
         /// 
         /// </summary>
@@ -1620,6 +1621,7 @@ namespace CUTCM
             test_txt.AppendText(string.Format("origional  value : {0} \tnew  value : {1}\n", old_value, new_vlaue));
             _character_data.char_race = new_vlaue;
 
+            #region old race combo switch
             switch (old_value)
             {
                 case "Human" :
@@ -1727,7 +1729,8 @@ namespace CUTCM
                 default:
                     break;
             }
-
+            #endregion
+            #region new race combo switch
             switch (new_vlaue)
             {
                 case "Human" :
@@ -1930,6 +1933,8 @@ namespace CUTCM
                 default:
                     break;
             }
+            #endregion
+
             display_qualities();
             list_current_skills();
         }
@@ -1959,6 +1964,8 @@ namespace CUTCM
             test_txt.AppendText(string.Format("origional  value : {0} \tnew  value : {1}\n", _character_data.char_flaw, thingie));
             _character_data.char_flaw = thingie;
         }
+
+        #endregion
     }
 
     /// <summary>
