@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Windows.Forms.VisualStyles;
 // ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
@@ -1617,7 +1618,14 @@ namespace CUTCM
             var race_diag = new Nazzadi_Language_Diag();
 
             get_initial_skills();
-            
+            if (!_character_data.race_chosen)
+            {
+                test_txt.AppendText("race chosen things should now be enabled\n");
+                att_tab_control.IsEnabled = true;
+                skill_qual_tab_control.IsEnabled = true;
+                _character_data.race_chosen = true;
+            }
+
             test_txt.AppendText(string.Format("origional  value : {0} \tnew  value : {1}\n", old_value, new_vlaue));
             _character_data.char_race = new_vlaue;
 
@@ -1664,6 +1672,7 @@ namespace CUTCM
 
                 case "Xenomix White (Sidoci)":
                     remove_quality("White", ASSET);
+                    update_skill_numbers(4);
 
                     remove_quality("Nightvision", ASSET);
                     remove_quality("Alluring*", ASSET);
@@ -1701,6 +1710,8 @@ namespace CUTCM
                     break;
                 
                 case "Sanctified":
+                    remove_quality("Sanctified" ,  ASSET);
+                    update_skill_numbers(3);
                      _character_data.char_attributes[AGI_ATT].attribute_value -= 1;
                     agi_att_val_c_text.Text = agi_att_val_text.Text = string.Format("{0}", _character_data.char_attributes[AGI_ATT].attribute_value);
 
@@ -1875,6 +1886,9 @@ namespace CUTCM
 
 
                 case "Sanctified":
+
+                    add_quality("Sanctified","3", ASSET,false);
+
                     test_txt.AppendText("we are in the scantified cood  for race adds\n");
 
                      _character_data.char_attributes[AGI_ATT].attribute_value += 1;
@@ -2010,6 +2024,7 @@ namespace CUTCM
         public int char_attribute_points { get; set; }
         public int char_cheat_points { get; set; }
         public bool char_creation_finailised { get; set; }
+        public bool race_chosen { get; set; }
 
         public int xenomix_att_chosen { get; set; }
         /// <summary>
@@ -2042,6 +2057,7 @@ namespace CUTCM
             char_drawbacks = new List<Quality_Data>();
             char_skills_list = new List<Char_Skills>();
             char_creation_finailised = false;
+            race_chosen = false;
         }
 
         /// <summary>

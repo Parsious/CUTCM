@@ -62,7 +62,7 @@
                         <TextBox x:Name="profession_text" HorizontalAlignment="Left" Height="23" Margin="414,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
                     </Grid>
 
-                    <TabControl HorizontalAlignment="Left" Height="210" Margin="4,130,0,0" VerticalAlignment="Top" Width="648">
+                    <TabControl x:Name="att_tab_control" HorizontalAlignment="Left" Height="210" Margin="4,130,0,0" VerticalAlignment="Top" Width="648" IsEnabled="False">
                         <TabItem Header="Primary Attrbutes" Width="150">
                             <Grid Background="#FFE5E5E5"  >
                                 <Grid Margin="10,40,0,0" Height="100" Width="590" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -207,7 +207,7 @@
                         </TabItem>
                     </TabControl>
 
-                    <TabControl HorizontalAlignment="Left" Margin="4,350,0,10" Width="648">
+                    <TabControl x:Name="skill_qual_tab_control" HorizontalAlignment="Left" Margin="4,350,0,10" Width="648" IsEnabled="False">
                         <TabItem Header="Skills" Width="100">
                             <Grid Background="#FFE5E5E5"  >
                                 <Label Content="Skill Points" HorizontalAlignment="Left" Margin="443,0,0,10" Width="120" HorizontalContentAlignment="Right" Height="26" VerticalAlignment="Bottom"/>
