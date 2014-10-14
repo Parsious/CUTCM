@@ -24,6 +24,7 @@ namespace Data_Manager
     public partial class MainWindow 
     {
         private Background_Data _background_data = new Background_Data();
+        private Powers_Data _powers_data = new Powers_Data();
         private const string IN_FILE = "data.xml";
         private const string WORKING_DIR = "cutech_data";
         private readonly string _data_file_path;
@@ -49,6 +50,10 @@ namespace Data_Manager
             output_box.AppendText("data file to be found at : " + _data_file_path + "\n" );
         }
 
+        /// <summary>
+        /// TODO: need to change the load code to the same code as ussed in the character Manager and also add code for load and save of the power XML
+        /// </summary>
+        /// <returns></returns>
         private static string create_path()
         {
             string dir = string.Format(@"{0}\{1}\", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), WORKING_DIR);
@@ -73,7 +78,7 @@ namespace Data_Manager
                 create_file.Close();
             }
             _background_data.sort();
-            display();
+            bg_display();
         }
  
         private void save_bg_data_file(string data_file_path)
@@ -82,25 +87,43 @@ namespace Data_Manager
             var writer = new StreamWriter(data_file_path);
             _data_ser.Serialize(writer, _background_data);
             writer.Close();
-        }  
+        }
 
+        #region menu items
         private void file_exit_menuitem_Click(object sender, RoutedEventArgs e)
         {
             save_bg_data_file(_data_file_path);
             Close();
         }
+        #endregion
 
+        #region test buttons
         private void clear_output_button_Click(object sender, RoutedEventArgs e)
         {
             output_box.Clear();
         }
-
-        private void display_button_Click(object sender, RoutedEventArgs e)
+ 
+        private void load_data_button_Click(object sender, RoutedEventArgs e)
         {
-            display();
+            load_bg_datafile(_data_file_path);
         }
 
-        private void display()
+        private void save_data_button_Click(object sender, RoutedEventArgs e)
+        {
+
+            save_bg_data_file(_data_file_path);
+        }
+        private void display_button_Click(object sender, RoutedEventArgs e)
+        {
+            bg_display();
+        }
+        #endregion
+
+        #region utility
+        /// <summary>
+        /// 
+        /// </summary>
+        private void bg_display()
         {
             _background_data.sort();
             _background_data.display_list(new[]
@@ -113,7 +136,25 @@ namespace Data_Manager
                 faction_text
             }, true, false);
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        private void power_display()
+        {
+            _powers_data.sort();
+            _powers_data.display_list(new[]
+            {
+                spell_text,
+                psychic_text
+            } ,true);
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private static string ucase(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -125,17 +166,98 @@ namespace Data_Manager
             return new string(output);
         }
 
-        private void load_data_button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="skill_level"></param>
+        /// <returns></returns>
+        private int convert_skill_to_num(string skill_level)
         {
-            load_bg_datafile(_data_file_path);
+            if (string.IsNullOrEmpty(skill_level))
+            {
+                return -1;
+            }
+            switch (skill_level)
+            {
+                case "None":
+                    return 0;
+                case "Student":
+                    return 1;
+                case "Novice":
+                    return 2;
+                case "Adept":
+                    return 3;
+                case "Expert":
+                    return 4;
+                case "Master":
+                    return 5;
+                default:
+                    return -1;
+            }
         }
 
-        private void save_data_button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text_box_text"></param>
+        /// <returns></returns>
+        private int int_from_txt(string text_box_text)
         {
+            if (string.IsNullOrEmpty(text_box_text))
+            {
+                return 0;
+            }
+            if (text_box_text.Split(' ').Length > 1)
+                text_box_text = text_box_text.Split(' ')[0];
+            try
+            {
+                return Convert.ToInt16(text_box_text);
+            }
+            catch (FormatException)
+            {
 
-            save_bg_data_file(_data_file_path);
+                return -1;
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text_box_text"></param>
+        /// <returns></returns>
+        private string get_from_Text(IEnumerable<string> text_box_text)
+        {
+            // ucase the cirst letter of each word
+            return text_box_text.Aggregate("", (current, t) => current + ucase(t));
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="combo_box_text"></param>
+        /// <returns></returns>
+        private string get_from_combo(IList<string> combo_box_text)
+        {
+            // discard the first part of the string 
+            if (combo_box_text.Count == 1)
+            {
+                return "";
+            }
+            else
+            {
+                string new_p = "";
+                for (var index = 1; index < combo_box_text.Count; index++)
+                {
+                    new_p += ucase(combo_box_text[index]);
+                }
+                return new_p;
+            }
+
+        }
+        #endregion
+
+        #region background data
         private void add_race_button_Click(object sender, RoutedEventArgs e)
         {
             int issue = 0;
@@ -154,7 +276,7 @@ namespace Data_Manager
                 output_box.AppendText("new Race name is : " + name + "\n");
                 _background_data.race(new Race_Data(name));
             }
-            display();
+            bg_display();
         }
 
         private void add_skill_button_Click(object sender, RoutedEventArgs e)
@@ -166,7 +288,7 @@ namespace Data_Manager
             skill_name_text.Clear();
             output_box.AppendText(" skill stuff \n name " + name + " assoicated Attribute " + attribute + "\n");
             _background_data.skill(new Skill_Data(name, attribute));
-            display();
+            bg_display();
         }
 
         private void add_quality_button_Click(object sender, RoutedEventArgs e)
@@ -181,7 +303,7 @@ namespace Data_Manager
             output_box.AppendText("quality : " + name + " ( " + type + " ) " + value + " points\n");
             var return_str = _background_data.quality(new Quality_Data(name, value), type);
             output_box.AppendText("quality : " + return_str +"\n");
-            display();
+            bg_display();
         }
 
         private void add_virute_button_Click(object sender, RoutedEventArgs e)
@@ -202,7 +324,7 @@ namespace Data_Manager
                 output_box.AppendText("new virtue name is : " + name + "\n");
                 _background_data.virtue(name);
             }
-            display();
+            bg_display();
         }
 
         private void add_flaw_button_Click(object sender, RoutedEventArgs e)
@@ -224,7 +346,7 @@ namespace Data_Manager
                 _background_data.flaw(name);
             }
 
-            display();
+            bg_display();
         }
 
         private void add_faction_button_Click(object sender, RoutedEventArgs e)
@@ -245,10 +367,184 @@ namespace Data_Manager
                 output_box.AppendText("new faction name is : " + name + "\n");
                 _background_data.faction(name);
             }
-            display();
+            bg_display();
         }
+        #endregion
+
+        #region power Data
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void add_spell_button_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            string type = get_from_combo(spell_type_combo.SelectedItem.ToString().Split(' '));
+            
+            string insan_diff = get_from_combo(spell_insanity_dif_combo.SelectedItem.ToString().Split(' '));
+
+            string occult_level = get_from_combo(spell_occult_req_combo.SelectedItem.ToString().Split(' '));
+
+            int occult_int = convert_skill_to_num(occult_level);
+
+            string name = get_from_Text(spell_name_text.Text.Split(' '));
+            string insan_con = get_from_combo(spell_insanity_conseqence_text.Text.Split(' '));
+            
+            string order = get_from_combo(spell_order_combo.SelectedItem.ToString().Split(' '));
+
+            int order_int = 0;
+            switch (order)
+            {
+                case "First Order":
+                    order_int = 1;
+                    break;
+                case "Second Order":
+                    order_int = 2;
+                    break;
+                case "Third Order":
+                    order_int = 3;
+                    break;
+                default :
+                    order_int = -1;
+                    break;
+            }
+            
+            int min_int = 0;
+            int min_ten = 0;
+
+            if (!string.IsNullOrEmpty(spell_int_req_text.Text))
+            {
+                 min_int = int_from_txt(spell_int_req_text.Text); 
+            }
+            if (!string.IsNullOrEmpty(spell_int_req_text.Text))
+            {
+                 min_ten = int_from_txt(spell_ten_req_text.Text); 
+            }
+
+
+
+            bool legal; 
+            if (spell_legal_check.IsChecked == true)
+            {
+                legal = true;
+            }
+            else
+            {
+                legal = false;
+            }
+            
+            output_box.AppendText("=========  new spell to be added soon initial data is  ==========\n");
+            output_box.AppendText(string.Format("====  name           \t: {0}  \n", name ));
+            output_box.AppendText(string.Format("====  type           \t: {0}  \n", type));
+            output_box.AppendText(string.Format("====  order          \t: {0} \t{1} \n", order, order_int));
+            output_box.AppendText(string.Format("====  insanity diff  \t: {0}  \n", insan_diff));
+            output_box.AppendText(string.Format("====  insanity cons  \t: {0}  \n", insan_con));
+            output_box.AppendText(string.Format("====  min int        \t: {0}  \n", min_int));
+            output_box.AppendText(string.Format("====  min ten        \t: {0}  \n", min_ten));
+            output_box.AppendText(string.Format("====  occult level   \t: {0}  \n", occult_level));
+            output_box.AppendText(string.Format("====  legality       \t: {0}  \n", legal));
+            output_box.AppendText("=================================================================\n");
+
+
+            _powers_data.spell(new Spell_Data(name,type,order_int,insan_diff,insan_con,min_int,min_ten,occult_int,legal));
+
+
+            power_display();
+
+        }
+
+        #endregion
+
+   
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Powers_Data
+    {
+        public List<Spell_Data> spell_list;
+        public List<Psychic_Data> psychic_list; 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Powers_Data()
+        {
+            spell_list = new List<Spell_Data>();
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void sort()
+        {
+            spell_list.Sort();
+            psychic_list.Sort();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tab_boxs"></param>
+        /// <param name="clear"></param>
+        public void display_list(TextBox[] tab_boxs, bool clear)
+        {
+            display_spell(tab_boxs[0], clear);
+            display_psychic(tab_boxs[1], clear);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="clear"></param>
+        private void display_psychic(TextBox box, bool clear)
+        {
+            if (clear)
+            {
+                box.Clear();
+            }
+            foreach (var item in psychic_list)
+            {
+                box.AppendText(item + "\n");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="clear"></param>
+        private void display_spell(TextBox box, bool clear)
+        {
+            if (clear)
+            {
+                box.Clear();
+            }
+            foreach (var item in spell_list)
+            {
+                box.AppendText(item + "\n");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="to_add"></param>
+        public void spell(Spell_Data to_add)
+        {
+            spell_list.Add(to_add);
+        }
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class Background_Data
     {
         // ReSharper disable FieldCanBeMadeReadOnly.Local
