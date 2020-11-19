@@ -53,7 +53,7 @@
                                 <Button x:Name="add_quality_button" Content="Add Quality" HorizontalAlignment="Left" Margin="10,0,0,10" Width="75" Height="22" VerticalAlignment="Bottom" Click="add_quality_button_Click"/>
                                 <Label Content="Quality Value" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
                                 <TextBox x:Name="quality_name_text" HorizontalAlignment="Left" Height="23" Margin="110,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="369"/>
-                                <TextBox x:Name="quality_value_text" HorizontalAlignment="Left" Height="23" Margin="110,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                                <TextBox x:Name="quality_value_text" HorizontalAlignment="Left" Height="23" Margin="110,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="quality_value_text_TextChanged"/>
                                 <ComboBox x:Name="quality_type_combo" HorizontalAlignment="Left" Margin="359,44,0,0" VerticalAlignment="Top" Width="120" >
                                     <ComboBoxItem Content="Asset" />
                                     <ComboBoxItem Content="Drawback" />

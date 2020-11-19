@@ -38,7 +38,7 @@ namespace Data_Manager
             _data_file_path = string.Format(@"{0}{1}", create_path(), IN_FILE);
             if (!File.Exists(_data_file_path))
             {
-                output_box.AppendText("no data file yet\n");
+                output_box.AppendText("no data file yet\nwe looked here : "+ _data_file_path);
             }
             else
             {
@@ -455,9 +455,13 @@ namespace Data_Manager
 
         }
 
+
         #endregion
 
-   
+        private void quality_value_text_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
