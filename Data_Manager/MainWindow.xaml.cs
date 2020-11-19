@@ -44,10 +44,11 @@ namespace Data_Manager
             {
                 output_box.AppendText(" this is where we load the file\n");
                 load_bg_datafile(_data_file_path);
+                output_box.AppendText("data file to be found at : " + _data_file_path + "\n" );
             }
 
 
-            output_box.AppendText("data file to be found at : " + _data_file_path + "\n" );
+            
         }
 
         /// <summary>
